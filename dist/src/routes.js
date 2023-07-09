@@ -74,7 +74,7 @@ function routes(app) {
                         data["listMinterAddress"].push(address);
                         const signer = yield getSigner();
                         const nftContract = new ethers_1.ethers.Contract(NFT_ADDRESS, getNFTAbi(), signer);
-                        const transaction = yield nftContract.grantRole(MINTER_ROLE, address);
+                        const transaction = yield nftContract.grantRole(MINTER_ROLE, address, { gasLimit: 300000, gasPrice: 18000000000 });
                         const tx = yield transaction.wait();
                         if (tx.events.length > 0) {
                             const transactionHash = tx.events[0].transactionHash;
@@ -114,7 +114,7 @@ function routes(app) {
                     (0, connect_1.writeJSON)(data);
                 }
                 else {
-                    message = "This address is already faucet before!";
+                    message = "This address has already been used as a faucet before!";
                 }
             }
             catch (err) {
